@@ -3,6 +3,9 @@ window.cx = window.cx || {};
 
     ns.Scene = function () {
         var self = this;
+        var minNumFlakes = 80;
+        var maxNumFlakes = 500;
+        var snowDensity = 0.02;
         this.width = 0;
         this.height = 0;
         this.scale = { x: 1.0, y: 1.0 };
@@ -39,6 +42,10 @@ window.cx = window.cx || {};
 
             self.drawTimer = setTimeout(self.draw, 50);
         };
+
+        this.calculateNumFlakes = function() {
+            return Math.max(Math.min(self.width * self.height * 0.001 * snowDensity, maxNumFlakes), minNumFlakes);
+        }
 
         this.move = function () {
             var now = elapsed = new Date().getTime();
@@ -143,9 +150,9 @@ window.cx = window.cx || {};
                     return { x: obj.x, y: obj.y };
                 }
             }
-            if (x > self.cxlogo.x && y > self.cxlogo.y && x < self.cxlogo.x + self.cxlogo.width && y < self.cxlogo.height + self.cxlogo.y) {
+            /*if (x > self.cxlogo.x && y > self.cxlogo.y && x < self.cxlogo.x + self.cxlogo.width && y < self.cxlogo.height + self.cxlogo.y) {
                 return self.cxlogo.collides(obj, x, y);
-            }
+            }*/
             return false;
         }
 
@@ -182,7 +189,7 @@ window.cx = window.cx || {};
             }
 
 
-            var numflakes = Math.max(Math.min(self.width * self.height * 0.0005, 700), 300);
+            var numflakes = this.calculateNumFlakes();
             self.snowFlakes.length = 0;
             for (i = self.snowFlakes.length; i < numflakes; i++) {
                 self.snowFlakes.push(new ns.SnowFlake(Math.random() * self.width, Math.random() * self.height, 0, 1, self.scale.x * Math.random() * 4 + 2));
