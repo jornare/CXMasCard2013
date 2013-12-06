@@ -13,8 +13,8 @@ window.cx = window.cx || {};
         this.canvas = null;
         this.drawTimer = null;
         this.snowFlakes = [];
-        this.cxlogo = new CanvasImage(100, 200, 400, 100, 'img/cxlogo.png', true);
-        this.bg = new CanvasImage(0, 0, 200, 200, 'img/candlewallpaper.jpg');
+        //this.cxlogo = new CanvasImage(100, 200, 400, 100, 'img/cxlogo.png', true);
+        this.bg = new ns.CanvasImage(0, 0, 200, 200, 'img/candlewallpaper.jpg');
         this.stats = false;
         this.tree;
 
@@ -76,7 +76,7 @@ window.cx = window.cx || {};
                     f.x += self.width;
                 }
                 //melting
-                f.life -= self.flame.melts(f.x, f.y);
+                //f.life -= self.flame.melts(f.x, f.y);
                 if (f.speedx * f.speedy == 0.0) {
                     f.life -= 0.0001 * elapsed;
                 }
@@ -174,13 +174,13 @@ window.cx = window.cx || {};
             self.canvas.height = h;
             self.bg.width = w;
             self.bg.height = h;
-            self.cxlogo.width = Math.floor(self.scale.x * 820 * 0.8);
+            /*self.cxlogo.width = Math.floor(self.scale.x * 820 * 0.8);
             self.cxlogo.height = Math.floor(self.scale.y * 262 * 0.8);
             self.cxlogo.x = Math.floor(self.scale.x * 30);
             self.cxlogo.y = Math.floor(self.scale.y * 450);
-            self.cxlogo.createCollisionMap();
+            self.cxlogo.createCollisionMap();*/
 
-            self.flame = new ns.Flame(self, self.scale.x * 806.0, self.scale.y * 330.0);
+           // self.flame = new ns.Flame(self, self.scale.x * 806.0, self.scale.y * 330.0);
 
             if (self.tree) {
                 self.tree.setPos(self.scale.x * 200,

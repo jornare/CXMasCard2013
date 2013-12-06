@@ -2,8 +2,14 @@
     var TWOPI = 2 * Math.PI,
         redBall = 11,
         yellowBall = 12,
-        heart = 13;
+        heart = 13,
+        treeLight=14
+        star=15;
 
+    var starImg = new Image();
+    starImg.src = "img/star.png";
+    var treeLightImg = new Image();
+    treeLightImg.src = "img/treelight.png";
     var heartImg = new Image();
     heartImg.src = "img/julekurv.png";
     var redBallImg = new Image();
@@ -17,11 +23,14 @@
             left = (left || 0) + 207,
             top = top || 0,
             height = height || 100,
-            treeHeight=0;
+            treeHeight = 0,
+            treeWidth = 0;
 
         createSprites();
         createBalls();
         createHeart();
+        createStar();
+        createTreeLight();
         createTree(height);
 
         this.setPos=function(l,t,h){
@@ -86,20 +95,24 @@
             spriteArray[redBall+1] = redBallImg;
         }
 
-        function createLights() {
-
+        function createTreeLight() {
+            spriteArray[treeLight + 1] = treeLightImg;
         }
 
         function createStar() {
-
+            spriteArray[star + 1] = starImg;
         }
+
         function createHeart() {
             spriteArray[heart+1] = heartImg;
         }
 
+
         // Now, let's define the vectors following the paths of the branches
         function createTree(height) {
-            vectors.length=0;
+            vectors = [];
+            vectors.length = 0;
+            numberOfVectors = 0;
             var P = 3.5; // some parameter to control the distance between sprites
 
             for (var k = 0; k < 100; k++) // 100 branches
@@ -118,7 +131,9 @@
                     // position is the number of the sprite it is.
                     spriteNum = j / H * 20 >> 1;
                     if (Math.random() > .99) {
-                        spriteNum = Math.random()*3+redBall>>0;
+                        spriteNum = Math.random()*4+redBall>>0;
+                    } else if (Math.random() > .9) {
+                        spriteNum = treeLight;
                     }
                     j += 16;
                     vectors[numberOfVectors++] = [
@@ -142,6 +157,7 @@
                 }
             }
             treeHeight = H;
+            treeWidth = 100;
         }
 
 
@@ -162,16 +178,21 @@
 
         }
 
-
+        var sprite = 0;
         this.draw = function (context) {
             //context.fillStyle = '#cca';
+            
             for (i = 0; L = vectors[i++];) // for all the ordered vectors
             {
-                context.drawImage(spriteArray[L[3] + 1],
+                sprite=spriteArray[L[3] + 1];
+                if(sprite==treeLightImg && Math.random()>0.999) {
+                    continue;
+                }
+                context.drawImage(sprite,
                     left + L[0] * mcd + L[2] * msd >> 0,
                     top + L[1] >> 1);
             }
-
+            context.drawImage(starImg, left-treeWidth/2,-20);
         }
 
 
