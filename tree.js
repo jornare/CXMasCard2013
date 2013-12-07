@@ -1,3 +1,4 @@
+window.cx = window.cx || {};
 (function (ns) {
     var TWOPI = 2 * Math.PI,
         redBall = 11,
@@ -16,11 +17,11 @@
     redBallImg.src = "img/redball.png";
 
 
-    ns.xmasTree = function (canvas, left, top, height) {
+    ns.XmasTree = function (_left, top, height) {
         var spriteArray = [],
             vectors = [],
             numberOfVectors = 0,
-            left = (left || 0) + 207,
+            left = (_left || 0),
             top = top || 0,
             height = height || 100,
             treeHeight = 0,
@@ -34,8 +35,8 @@
         createTree(height);
 
         this.setPos=function(l,t,h){
-            left=l;
-            top=t;
+            left = l;
+            top = t;
             height = h;
             createTree(height);
         }
@@ -166,7 +167,7 @@
             msd = Math.sin(D);
 
         this.move = function (elapsed) {
-            //D += elapsed * 0.0001;
+            D += elapsed * 0.00005;
             if (elapsed > 10) {
                 mcd = Math.cos(D),
                 msd = Math.sin(D);
@@ -201,5 +202,5 @@
 
 
 
-}(window));
+}(window.cx));
 

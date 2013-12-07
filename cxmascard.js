@@ -2,8 +2,8 @@ window.cx = window.cx || {};
 (function (document, window, ns) {
     var TwoPI = 2 * Math.PI;
 
-    var scene = new ns.Scene(),
-        card = new ns.Card(scene);
+    var scene =new ns.Scene(),
+        card = window.card = new ns.Card(scene);
 
 //set up events
 

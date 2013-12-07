@@ -5,16 +5,18 @@ window.cx = window.cx || {};
     snowFlakeImg.src = "img/snowflake.png";
     //var snowflake = 
 
-    ns.SnowFlake = function (x, y, speedx, speedy, size) {
+    ns.SnowFlake = function (x, y, z, speedx, speedy, size) {
         var self = this;
         this.x = x;
         this.y = y;
+        this.z = z;
         this.speedx = speedx || 0.0;
         this.speedy = speedy || 0.0;
-        this.life = 1.0;
+
         this.size = size;
 
-        this.move = function (scene, dt) {
+        //move within sphere
+        /*this.move = function (scene, dt) {
             var frames = dt / 100,
                 newx,
                 newy,
@@ -46,15 +48,14 @@ window.cx = window.cx || {};
                 self.x = newx;
                 self.y = newy;
             }
-        };
-
+        };*/
+        
         var s, ss;//for speed
-        this.draw = function (ctx) {
-            s = (self.size * self.life),
+        this.draw = function (ctx, x, y, scale) {
+            s = (self.size ),
             ss = 2 * s;
-            if (self.life != ctx.globalAlpha)
-                ctx.globalAlpha = self.life;
-            ctx.drawImage(snowFlakeImg, self.x - s, self.y - s, ss, ss);
+
+            ctx.drawImage(snowFlakeImg, x+ self.x*scale - s, y + self.y*scale - s, ss, ss);
         };
 
     };
