@@ -192,7 +192,7 @@
                     left + L[0] * mcd + L[2] * msd >> 0,
                     top + L[1] >> 1);
             }
-            context.drawImage(starImg, left-treeWidth/2,-20);
+            context.drawImage(starImg, left-treeWidth/2,top-140);
         }
 
 

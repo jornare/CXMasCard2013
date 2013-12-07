@@ -15,6 +15,8 @@ window.cx = window.cx || {};
         this.snowFlakes = [];
         //this.cxlogo = new CanvasImage(100, 200, 400, 100, 'img/cxlogo.png', true);
         this.bg = new ns.CanvasImage(0, 0, 200, 200, 'img/candlewallpaper.jpg');
+        this.fg = new ns.CanvasImage(100, 50, 400, 440, 'img/magicball.png');
+        this.fgbg = new ns.CanvasImage(100, 50, 400, 440, 'img/magicball_bg.png');
         this.stats = false;
         this.tree;
 
@@ -106,6 +108,7 @@ window.cx = window.cx || {};
             self.bg.draw(ctx);
             //self.cxlogo.draw( ctx );
 
+            self.fgbg.draw(ctx);
 
 
             //c.strokeStyle   = '#fff'; 
@@ -120,7 +123,7 @@ window.cx = window.cx || {};
             if (self.flame) {
                 self.flame.draw(ctx);
             }
-
+            self.fg.draw(ctx);
 
 
             if (self.stats) {//statistics
@@ -130,6 +133,7 @@ window.cx = window.cx || {};
                 ctx.fillText(((1000.0 / self.elapsedTime) << 0) + 'fps', 100, 100);
                 ctx.fillText(self.snowFlakes.length + 'flakes', 100, 200);
             }
+
             self.drawTimer = setTimeout(self.draw, 1);
             //self.canvas.style.transform="rotate(30deg)";
         };
@@ -183,11 +187,18 @@ window.cx = window.cx || {};
            // self.flame = new ns.Flame(self, self.scale.x * 806.0, self.scale.y * 330.0);
 
             if (self.tree) {
-                self.tree.setPos(self.scale.x * 200,
-                                 self.scale.y * 5,
-                                 self.scale.y * 120);
+                self.tree.setPos(self.scale.x * 420,
+                                 self.scale.y * 180,
+                                 self.scale.y * 70);
             }
-
+            self.fg.width = self.scale.x * 500;
+            self.fg.height = self.scale.x * 520;
+            self.fg.x = self.scale.x * 200;
+            self.fg.y = self.scale.y * 50;
+            self.fgbg.width = self.scale.x * 500;
+            self.fgbg.height = self.scale.x * 520;
+            self.fgbg.x = self.scale.x * 200;
+            self.fgbg.y = self.scale.y * 50;
 
             var numflakes = this.calculateNumFlakes();
             self.snowFlakes.length = 0;
