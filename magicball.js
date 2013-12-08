@@ -133,13 +133,15 @@ window.cx = window.cx || {};
             }
             
             if (self.tree) {
-                self.tree.setPos(self.x + self.radius - scale.x * 20,
-                                 self.y + scale.y * 180,
-                                 scale.y * self.radius * 0.3);
+                self.tree.setPos(self.x + self.radius - scale.x * 25,
+                                 self.y + self.radius,
+                                 self.radius * 0.2,
+                                 scale.x);
             } else {
-                this.tree = new ns.XmasTree(self.x + self.radius-scale.x*20,
-                                 self.y + scale.y * 180,
-                                 scale.y * self.radius * 0.3);
+                this.tree = new ns.XmasTree(self.x + self.radius - scale.x * 25,
+                                self.y + self.radius,
+                                self.radius * 0.2,
+                                scale.x);
             }
         }
 

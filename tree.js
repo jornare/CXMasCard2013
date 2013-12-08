@@ -2,7 +2,7 @@ window.cx = window.cx || {};
 (function (ns) {
     var TWOPI = 2 * Math.PI,
         redBall = 11,
-        yellowBall = 12,
+        cBall = 12,
         heart = 13,
         treeLight=14
         star=15;
@@ -15,15 +15,18 @@ window.cx = window.cx || {};
     heartImg.src = "img/julekurv.png";
     var redBallImg = new Image();
     redBallImg.src = "img/redball.png";
+    var cBallImg = new Image();
+    cBallImg.src = "img/cball.png";
 
 
-    ns.XmasTree = function (_left, top, height) {
+    ns.XmasTree = function (_left, _top, _height, _scale) {
         var spriteArray = [],
             vectors = [],
             numberOfVectors = 0,
             left = (_left || 0),
-            top = top || 0,
-            height = height || 100,
+            top = _top || 0,
+            scale = _scale || 1.0,
+            height = _height || 100,
             treeHeight = 0,
             treeWidth = 0;
 
@@ -34,21 +37,35 @@ window.cx = window.cx || {};
         createTreeLight();
         createTree(height);
 
-        this.setPos=function(l,t,h){
+        this.setPos=function(l,t,h, s){
             left = l;
             top = t;
+            this.resize(s,h);
+        }
+
+        this.resize = function(s, h){
+            scale = s;
             height = h;
+            scale = s || 1.0;
+            createBalls();
+            createHeart();
+            createStar();
+            createTreeLight();
             createTree(height);
         }
 
         // Let's make 10 leaves sprites, with different color intensities, to make the inner leaves inside the tree darker
         function createSprites() {
+            var rhalf = 10 * scale >> 0,
+                r=2*rhalf,
+                w= 2*r;
+
             for (k = 1; k <= 10; k++) {
                 // Setting up the sprite size and getting the context
 
                 spriteArray[k] = document.createElement('canvas');
-                spriteArray[k].width = 64;
-                spriteArray[k].height = 64;
+                spriteArray[k].width = w;
+                spriteArray[k].height = w;
                 var spriteContext = spriteArray[k].getContext('2d');
 
                 // Drawing a lot of random lines/leaves
@@ -63,8 +80,8 @@ window.cx = window.cx || {};
                     {
                         spriteContext.beginPath();
                         spriteContext.strokeStyle = 'rgba(' + R + ', ' + (R + B * L >> 0) + ', 40, .1)';
-                        spriteContext.moveTo(32 + x * 16, 32 + y * 16);
-                        spriteContext.lineTo(32 + x * 32, 32 + y * 32);
+                        spriteContext.moveTo(r + x * rhalf, r + y * rhalf);
+                        spriteContext.lineTo(r + x * r, r + y * r);
                         spriteContext.stroke();
                     }
                 }
@@ -78,10 +95,10 @@ window.cx = window.cx || {};
                 // Setting up the sprite size and getting the context
 
                 spriteArray[k] = document.createElement('canvas');
-                spriteArray[k].width = 96;
-                spriteArray[k].height = 96;
+                spriteArray[k].width = 12 * scale >> 0;
+                spriteArray[k].height = 24 * scale >> 0;
                 var spriteContext = spriteArray[k].getContext('2d');
-                /*
+ /*               
                 for (i = 0; i < 7; i++) // Instead of using radial gradients, I've done the gradient on the balls by drawing 7 circles, one on top of each other. Just for size reasons.
                 {
                     var I = i * 32;
@@ -93,18 +110,27 @@ window.cx = window.cx || {};
                     spriteContext.fill();
                 }*/
             }
-            spriteArray[redBall+1] = redBallImg;
+            redBallImg.width = cBallImg.width = 51 * 0.5*scale >> 0;
+            redBallImg.height = cBallImg.height = 64 * 0.5*scale >> 0;
+            spriteArray[redBall + 1] = redBallImg;
+            spriteArray[cBall + 1] = cBallImg;
         }
 
         function createTreeLight() {
+            treeLightImg.width = 16 * scale >> 0;
+            treeLightImg.height = 16 * scale >> 0;
             spriteArray[treeLight + 1] = treeLightImg;
         }
 
         function createStar() {
+            starImg.width = 98 * scale >> 0;
+            starImg.height = 98 * scale >> 0;
             spriteArray[star + 1] = starImg;
         }
 
         function createHeart() {
+            heartImg.width = 25 * scale >> 0;
+            heartImg.height = 32 * scale >> 0;
             spriteArray[heart+1] = heartImg;
         }
 
@@ -131,8 +157,8 @@ window.cx = window.cx || {};
                     // Now, a vector defined as a size 4 array. The first position is x, second y, third z, and last
                     // position is the number of the sprite it is.
                     spriteNum = j / H * 20 >> 1;
-                    if (Math.random() > .99) {
-                        spriteNum = Math.random()*4+redBall>>0;
+                    if (Math.random() > .98) {
+                        spriteNum = Math.random() * 4 + redBall>>0;
                     } else if (Math.random() > .9) {
                         spriteNum = treeLight;
                     }
@@ -189,11 +215,14 @@ window.cx = window.cx || {};
                 if(sprite==treeLightImg && Math.random()>0.999) {
                     continue;
                 }
-                context.drawImage(sprite,
-                    left + L[0] * mcd + L[2] * msd >> 0,
-                    top + L[1] >> 1);
+                context.drawImage(sprite, //sprite
+                    left + L[0] * mcd + L[2] * msd >> 0, //x
+                    top + L[1] >> 1, //y
+                    scale*sprite.width,
+                    scale*sprite.height
+                    ); 
             }
-            context.drawImage(starImg, left-treeWidth/2,top-140);
+            context.drawImage(starImg, left-30*scale, top-170*scale, starImg.width, starImg.height);
         }
 
 
