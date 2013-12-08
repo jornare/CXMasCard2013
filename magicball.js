@@ -28,7 +28,7 @@ window.cx = window.cx || {};
 
         this.move = function (elapsed) {
             var sf = self.snowFlakes;
-            var snowFlakeDelta = elapsed * 0.0001;
+            var snowFlakeDelta = elapsed * 0.00005;
             self.tree.move(elapsed);
             for (i = 0; i < sf.length; i++) {
 
@@ -39,11 +39,11 @@ window.cx = window.cx || {};
         }
 
         this.moveFlake = function (obj, snowFlakeDelta) {
-            obj.y += snowFlakeDelta;
+           // obj.y += snowFlakeDelta;
            
 
 
-            /*
+            
             
             var speedx2 = obj.speedx * obj.speedx,
             speedy2 = obj.speedy * obj.speedy,
@@ -53,16 +53,16 @@ window.cx = window.cx || {};
             accx = (this.gravx + this.wind + (Math.random()) - 0.5),
             accy = (this.gravy + (Math.random() * 0.2) - 0.1);//acceleration
 
-            airresx = self.speedx >= 0.0 ? -airresx : airresx;
-            airresy = self.speedy >= 0.0 ? -airresy : airresy;
+            airresx = obj.speedx >= 0.0 ? -airresx : airresx;
+            airresy = obj.speedy >= 0.0 ? -airresy : airresy;
 
             obj.speedx += (accx + airresx);
             obj.speedy += (accy + airresy);
-            obj.x += obj.speedx*0.01;
-            obj.y += obj.speedy*0.01;
+            obj.x += obj.speedx * snowFlakeDelta;
+            obj.y += obj.speedy * snowFlakeDelta;
 
 
-            */
+            
 
 
 
@@ -113,8 +113,8 @@ window.cx = window.cx || {};
             magicBallImg.x = bgImg.x = this.x;// + this.scaleX * 200;
             magicBallImg.y = bgImg.y = this.y;// + this.scaleY * 50;
  
-            this.radius = magicBallImg.width / 2 - 8;
-            this.centerX = this.radius+4;
+            this.radius = magicBallImg.width / 2 - 12;
+            this.centerX = this.radius+7;
             this.centerY = this.radius;
             this.bottomY = this.radius * 1.8;
 
