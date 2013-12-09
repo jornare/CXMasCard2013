@@ -8,7 +8,8 @@ window.cx = window.cx || {};
         var self = this;
         this.x = x;
         this.y = y;
-        this.width = this.height=100;
+        this.width = scaleX * 400;
+        this.height = scaleX * 489;
         this.children = [];
         this.scaleX = scaleX;
         this.scaleY = scaleY;
@@ -96,10 +97,28 @@ window.cx = window.cx || {};
             for (i = 0; i < sf.length; i++) {
                 sfi = sf[i];
 
-                sf[i].draw(ctx, this.x+this.centerX, this.y+this.centerY, this.radius);
+                sf[i].draw(ctx, this.x + this.centerX, this.y + this.centerY, this.radius);
 
             }
-        }
+        };
+
+        this.setPos = function (x, y) {
+            this.x = x;
+            this.y = y;
+            magicBallImg.x = bgImg.x = this.x;// + this.scaleX * 200;
+            magicBallImg.y = bgImg.y = this.y;// + this.scaleY * 50;
+            if (self.tree) {
+                self.tree.setPos(self.x + self.radius - self.scaleX * 15,
+                                 self.y + self.radius,
+                                 self.radius*2,
+                                 self.scaleX);
+            } else {
+                this.tree = new ns.XmasTree(self.scaleX + self.radius - self.scaleX * 15,
+                                self.y + self.radius,
+                                self.radius*2,
+                                self.scaleX);
+            }
+        };
 
         this.resize = function (scale) {
             this.scaleX = scale.x;
@@ -110,11 +129,8 @@ window.cx = window.cx || {};
             magicBallImg.height = bgImg.height = this.scaleX * 489;
 
 
-            magicBallImg.x = bgImg.x = this.x;// + this.scaleX * 200;
-            magicBallImg.y = bgImg.y = this.y;// + this.scaleY * 50;
- 
-            this.radius = magicBallImg.width / 2 - 12;
-            this.centerX = this.radius+7;
+            this.radius = magicBallImg.width / 2 - 12 * this.scaleX;
+            this.centerX = this.radius+7 * this.scaleX;
             this.centerY = this.radius;
             this.bottomY = this.radius * 1.8;
 
@@ -132,17 +148,7 @@ window.cx = window.cx || {};
                     self.scaleX * Math.random() * 4 + 2));
             }
             
-            if (self.tree) {
-                self.tree.setPos(self.x + self.radius - scale.x * 25,
-                                 self.y + self.radius,
-                                 self.radius * 0.2,
-                                 scale.x);
-            } else {
-                this.tree = new ns.XmasTree(self.x + self.radius - scale.x * 25,
-                                self.y + self.radius,
-                                self.radius * 0.2,
-                                scale.x);
-            }
+            this.setPos(this.x, this.y);
         }
 
 

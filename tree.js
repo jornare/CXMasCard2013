@@ -56,7 +56,7 @@ window.cx = window.cx || {};
 
         // Let's make 10 leaves sprites, with different color intensities, to make the inner leaves inside the tree darker
         function createSprites() {
-            var rhalf = 10 * scale >> 0,
+            var rhalf = 6 * scale >> 0,
                 r=2*rhalf,
                 w= 2*r;
 
@@ -74,12 +74,12 @@ window.cx = window.cx || {};
                     var x = Math.sin(i), // think this sin is just a random number between -1 and 1, this was done for size reasons.
                         y = Math.random() * 2 - 1, // other random number from -1 to 1
                         B = Math.sqrt((x * x + y * y) - x / .9 - 1.5 * y + 1),// This is something similar to a radial gradient.
-                        R = 67 * (B + 1) * (L = k / 9 + .8) >> 1; // Also for the colors of the leaves
+                        R = 56 * (B + 1) * (L = k / 9 + .8) >> 1; // Also for the colors of the leaves
 
                     if ((x * x + y * y) < 1) // we will draw lines only if they are inside a circle
                     {
                         spriteContext.beginPath();
-                        spriteContext.strokeStyle = 'rgba(' + R + ', ' + (R + B * L >> 0) + ', 40, .1)';
+                        spriteContext.strokeStyle = 'rgba(' + R + ', ' + (R + B * L >> 0) + ', 30, .1)';
                         spriteContext.moveTo(r + x * rhalf, r + y * rhalf);
                         spriteContext.lineTo(r + x * r, r + y * r);
                         spriteContext.stroke();
@@ -110,8 +110,8 @@ window.cx = window.cx || {};
                     spriteContext.fill();
                 }*/
             }
-            redBallImg.width = cBallImg.width = 51 * 0.5*scale >> 0;
-            redBallImg.height = cBallImg.height = 64 * 0.5*scale >> 0;
+            redBallImg.width = cBallImg.width = 51 * 0.4*scale >> 0;
+            redBallImg.height = cBallImg.height = 64 * 0.4*scale >> 0;
             spriteArray[redBall + 1] = redBallImg;
             spriteArray[cBall + 1] = cBallImg;
         }
@@ -129,8 +129,8 @@ window.cx = window.cx || {};
         }
 
         function createHeart() {
-            heartImg.width = 25 * scale >> 0;
-            heartImg.height = 32 * scale >> 0;
+            heartImg.width = 25 * scale * 0.7 >> 0;
+            heartImg.height = 32 * scale * 0.7 >> 0;
             spriteArray[heart+1] = heartImg;
         }
 
@@ -140,33 +140,36 @@ window.cx = window.cx || {};
             vectors = [];
             vectors.length = 0;
             numberOfVectors = 0;
-            var P = 3.5; // some parameter to control the distance between sprites
+            var x, y, z, R, spriteNum, P = 3.7 * scale; // some parameter to control the distance between sprites
 
-            for (var k = 0; k < 100; k++) // 100 branches
+
+            for (var k = 0; true; k++) // 80 branches
             {
-                var x = 0,
-                    z = 0, // x=0 and z=0 is the central axis of the tree
-                    y = H = k + Math.sqrt(k) * height, // the bottom of the tree will get more branches than the top with this
+                x = 0,
+                z = 0, // x=0 and z=0 is the central axis of the tree
+                y = H = k*scale + Math.sqrt(k) * scale * 16*2, // the bottom of the tree will get more branches than the top with this
                 // also, H, the branch lenght, is proportional to the distance to the top of the tree
-                    R = Math.random() * 446, // this picks a random angle for the branch
-                    spriteNum;
+                R = Math.random() * 446; // this picks a random angle for the branch
 
+                if (y > height) {
+                    break;
+                }
                 for (j = 0; j < H;) // the number of sprites in a branch is proportional to its length.
                 {
 
                     // Now, a vector defined as a size 4 array. The first position is x, second y, third z, and last
                     // position is the number of the sprite it is.
                     spriteNum = j / H * 20 >> 1;
-                    if (Math.random() > .98) {
+                    if (Math.random() > .95 && y < height * 0.7 && y > height*0.2) {
                         spriteNum = Math.random() * 4 + redBall>>0;
                     } else if (Math.random() > .9) {
                         spriteNum = treeLight;
                     }
-                    j += 16;
+                    j += 16*scale;
                     vectors[numberOfVectors++] = [
-                        x += Math.sin(R) * P + Math.random() * 6 - 3,
-                        y += Math.random() * 16 - 8,
-                        z += Math.cos(R) * P + Math.random() * 6 - 3,
+                        x += Math.sin(R) * P + Math.random() * 6*scale - 3*scale,
+                        y += Math.random() * 16*scale - 8*scale,
+                        z += Math.cos(R) * P + Math.random() * 6*scale - 3*scale,
                         spriteNum];
                     /*original
                     vectors[numberOfVectors++] = [
@@ -183,7 +186,7 @@ window.cx = window.cx || {};
                     // the original version also moved a bit more from the branch the balls when they were added.
                 }
             }
-            treeHeight = H;
+            treeHeight = height;
             treeWidth = 100;
         }
 
@@ -222,7 +225,9 @@ window.cx = window.cx || {};
                     scale*sprite.height
                     ); 
             }
-            context.drawImage(starImg, left-30*scale, top-170*scale, starImg.width, starImg.height);
+          //  context.drawImage(treeLightImg, left, top);
+
+            context.drawImage(starImg, left - (starImg.width/2-16)*scale, top - (starImg.height-20) * scale, starImg.width, starImg.height);
         }
 
 

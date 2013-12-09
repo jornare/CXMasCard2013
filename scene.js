@@ -18,10 +18,10 @@ window.cx = window.cx || {};
         this.drawTimer = null;
 
         //this.cxlogo = new CanvasImage(100, 200, 400, 100, 'img/cxlogo.png', true);
-        this.bg = new ns.CanvasImage(0, 0, 200, 200, 'img/candlewallpaper.jpg');
+        this.bg = new ns.CanvasImage(0, 0, 200, 200, 'img/fireplacebg.jpg');
 
         this.stats = false;
-        this.magicBall = new ns.MagicBall();
+        this.magicBall;
 
         self.x = 0;
         self.y = 0;
@@ -117,10 +117,17 @@ window.cx = window.cx || {};
 
            // self.flame = new ns.Flame(self, self.scale.x * 806.0, self.scale.y * 330.0);
 
-            self.magicBall.x = self.scale.x * 300;
-            self.magicBall.y = self.scale.y * 100;
-            self.magicBall.resize(self.scale);
+            var mbx = self.scale.x * 400>>0,
+                mby = h - 489 * self.scale.x  +40*self.scale.y>>0;
 
+            if (!this.magicBall) {
+                this.magicBall = new ns.MagicBall(mbx, mby, self.scale.x, self.scale.y);
+            }
+
+
+
+            self.magicBall.resize(self.scale);
+            self.magicBall.setPos(mbx, mby);
 
 
             var card = document.getElementById('card');
