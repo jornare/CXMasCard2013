@@ -108,14 +108,14 @@ window.cx = window.cx || {};
             magicBallImg.x = bgImg.x = this.x;// + this.scaleX * 200;
             magicBallImg.y = bgImg.y = this.y;// + this.scaleY * 50;
             if (self.tree) {
-                self.tree.setPos(self.x + self.radius - self.scaleX * 15,
-                                 self.y + self.radius,
-                                 self.radius*2,
+                self.tree.setPos(self.x + self.centerX,
+                                 self.y + self.radius*0.6,
+                                 self.radius*1.1,
                                  self.scaleX);
             } else {
-                this.tree = new ns.XmasTree(self.scaleX + self.radius - self.scaleX * 15,
-                                self.y + self.radius,
-                                self.radius*2,
+                this.tree = new ns.XmasTree(self.x + self.centerX,
+                                 self.y + self.radius*0.6,
+                                self.radius*1.1,
                                 self.scaleX);
             }
         };

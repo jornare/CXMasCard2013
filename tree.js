@@ -44,7 +44,6 @@ window.cx = window.cx || {};
         }
 
         this.resize = function(s, h){
-            scale = s;
             height = h;
             scale = s || 1.0;
             createBalls();
@@ -140,14 +139,14 @@ window.cx = window.cx || {};
             vectors = [];
             vectors.length = 0;
             numberOfVectors = 0;
-            var x, y, z, R, spriteNum, P = 3.7 * scale; // some parameter to control the distance between sprites
+            var x, y, z, R, spriteNum, P = 4 * scale; // some parameter to control the distance between sprites
 
 
             for (var k = 0; true; k++) // 80 branches
             {
                 x = 0,
                 z = 0, // x=0 and z=0 is the central axis of the tree
-                y = H = k*scale + Math.sqrt(k) * scale * 16*2, // the bottom of the tree will get more branches than the top with this
+                y = H = k*scale + Math.sqrt(k) * scale * 6, // the bottom of the tree will get more branches than the top with this
                 // also, H, the branch lenght, is proportional to the distance to the top of the tree
                 R = Math.random() * 446; // this picks a random angle for the branch
 
@@ -160,12 +159,12 @@ window.cx = window.cx || {};
                     // Now, a vector defined as a size 4 array. The first position is x, second y, third z, and last
                     // position is the number of the sprite it is.
                     spriteNum = j / H * 20 >> 1;
-                    if (Math.random() > .95 && y < height * 0.7 && y > height*0.2) {
+                    if (Math.random() > .95 && y < height * 0.9 && y > height*0.2) {
                         spriteNum = Math.random() * 4 + redBall>>0;
                     } else if (Math.random() > .9) {
                         spriteNum = treeLight;
                     }
-                    j += 16*scale;
+                    j += 8*scale;
                     vectors[numberOfVectors++] = [
                         x += Math.sin(R) * P + Math.random() * 6*scale - 3*scale,
                         y += Math.random() * 16*scale - 8*scale,
@@ -220,14 +219,18 @@ window.cx = window.cx || {};
                 }
                 context.drawImage(sprite, //sprite
                     left + L[0] * mcd + L[2] * msd >> 0, //x
-                    top + L[1] >> 1, //y
+                    top + L[1] >> 0, //y
                     scale*sprite.width,
                     scale*sprite.height
                     ); 
             }
           //  context.drawImage(treeLightImg, left, top);
 
-            context.drawImage(starImg, left - (starImg.width/2-16)*scale, top - (starImg.height-20) * scale, starImg.width, starImg.height);
+            context.drawImage(starImg,
+                left - (starImg.width / 2 ) ,
+                top - (starImg.height / 2) ,
+                starImg.width,
+                starImg.height);
         }
 
 
