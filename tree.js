@@ -46,6 +46,7 @@ window.cx = window.cx || {};
         this.resize = function(s, h){
             height = h;
             scale = s || 1.0;
+            createSprites();
             createBalls();
             createHeart();
             createStar();
@@ -55,7 +56,7 @@ window.cx = window.cx || {};
 
         // Let's make 10 leaves sprites, with different color intensities, to make the inner leaves inside the tree darker
         function createSprites() {
-            var rhalf = 6 * scale >> 0,
+            var rhalf =  8*scale >> 0,
                 r=2*rhalf,
                 w= 2*r;
 
@@ -94,8 +95,8 @@ window.cx = window.cx || {};
                 // Setting up the sprite size and getting the context
 
                 spriteArray[k] = document.createElement('canvas');
-                spriteArray[k].width = 12 * scale >> 0;
-                spriteArray[k].height = 24 * scale >> 0;
+                spriteArray[k].width = 6 * scale >> 0;
+                spriteArray[k].height = 12 * scale >> 0;
                 var spriteContext = spriteArray[k].getContext('2d');
  /*               
                 for (i = 0; i < 7; i++) // Instead of using radial gradients, I've done the gradient on the balls by drawing 7 circles, one on top of each other. Just for size reasons.
@@ -109,8 +110,8 @@ window.cx = window.cx || {};
                     spriteContext.fill();
                 }*/
             }
-            redBallImg.width = cBallImg.width = 51 * 0.4*scale >> 0;
-            redBallImg.height = cBallImg.height = 64 * 0.4*scale >> 0;
+            redBallImg.width = cBallImg.width = 51 * 0.5*scale >> 0;
+            redBallImg.height = cBallImg.height = 64 * 0.5*scale >> 0;
             spriteArray[redBall + 1] = redBallImg;
             spriteArray[cBall + 1] = cBallImg;
         }
@@ -128,8 +129,8 @@ window.cx = window.cx || {};
         }
 
         function createHeart() {
-            heartImg.width = 25 * scale * 0.7 >> 0;
-            heartImg.height = 32 * scale * 0.7 >> 0;
+            heartImg.width = 25 * scale * 0.9 >> 0;
+            heartImg.height = 32 * scale * 0.9 >> 0;
             spriteArray[heart+1] = heartImg;
         }
 
@@ -219,9 +220,10 @@ window.cx = window.cx || {};
                 }
                 context.drawImage(sprite, //sprite
                     left + L[0] * mcd + L[2] * msd >> 0, //x
-                    top + L[1] >> 0, //y
-                    scale*sprite.width,
-                    scale*sprite.height
+                    top + L[1] >> 0
+                    , //y
+                    sprite.width,
+                    sprite.height
                     ); 
             }
           //  context.drawImage(treeLightImg, left, top);

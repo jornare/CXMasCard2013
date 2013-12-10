@@ -41,11 +41,7 @@ window.cx = window.cx || {};
 
         this.moveFlake = function (obj, snowFlakeDelta) {
            // obj.y += snowFlakeDelta;
-           
-
-
-            
-            
+                 
             var speedx2 = obj.speedx * obj.speedx,
             speedy2 = obj.speedy * obj.speedy,
             angularspeed = Math.sqrt(speedx2 + speedy2),
@@ -61,13 +57,6 @@ window.cx = window.cx || {};
             obj.speedy += (accy + airresy);
             obj.x += obj.speedx * snowFlakeDelta;
             obj.y += obj.speedy * snowFlakeDelta;
-
-
-            
-
-
-
-
 
             var r = Math.sqrt(obj.x * obj.x + obj.y * obj.y);
             if (r >= 1) {
@@ -95,10 +84,7 @@ window.cx = window.cx || {};
         this.drawFlakes = function (ctx) {
             var sf = this.snowFlakes, sfi;
             for (i = 0; i < sf.length; i++) {
-                sfi = sf[i];
-
                 sf[i].draw(ctx, this.x + this.centerX, this.y + this.centerY, this.radius);
-
             }
         };
 
