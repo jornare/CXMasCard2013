@@ -8,16 +8,16 @@ window.cx = window.cx || {};
         this.y = y;
         this.particles = [];
         this.colors = [];
-        this.flare = new Image();
-        this.flare.src = 'img/flare.png';
+        //this.flare = new Image();
+        //this.flare.src = 'img/flare.png';
         this.flareWidth = 1;
         this.flareHeight = 1;
         this.heatCenterY = 1;
-        this.flare.onload = function () {
+       /* this.flare.onload = function () {
             self.flareWidth = self.flare.width * scene.scale.x;
             self.flareHeight = self.flare.height * scene.scale.y;
             self.heatCenterY = self.y - self.flareHeight * 0.2;
-        };
+        };*/
         // prepare palette function
         this.preparePalette = function () {
             for (var i = 0; i < 64; ++i) {
@@ -38,25 +38,36 @@ window.cx = window.cx || {};
 
         this.create = function () {
             self.preparePalette();
-            for (var i = 0; i < 30; i++) {
+            for (var i = 0; i < 20; i++) {
                 this.particles.push(new Particle(self.x, self.y));
             }
         };
 
-        this.move = function (dt, ccol) {
+        this.move = function (elapsed) {
+            var numParticles = self.particles.length,
+                p;
+            for (i = 0; i < numParticles; i++) {
+                p = self.particles[i];
+                //lets move the particles
+                p.remaining_life -= elapsed;
+                p.radius -= elapsed * 0.002;
+
+
+                p.location.x += p.speed.x * elapsed;////p.speed.x*(scene.gravx+1.0)*5;
+                p.location.y += p.speed.y * elapsed;//p.speed.y*(scene.gravy+1.0)*5;
+
+                //regenerate particles
+                if (p.remaining_life < 0 || p.radius < 0) {
+                    //a brand new particle replacing the dead one
+                    self.particles[i] = new Particle(self.x, self.y);
+                }
+
+
+            }
 
         };
 
-        this.melts = function (x, y) {
-            var xx = x - self.x,
-                yy = (y - self.heatCenterY) * 0.5;
-            var r = Math.sqrt(xx * xx + yy * yy);
-            if (r < 100.0 * scene.scale.x) {
-                r = 1.0 - r / 100.0;
-                return r * r * 0.01 * scene.elapsedTime;
-            }
-            return 0.0;
-        }
+     
 
         this.draw = function (ctx) {
             var numParticles = self.particles.length,
@@ -73,7 +84,7 @@ window.cx = window.cx || {};
             }
             xavg /= numParticles;
 
-            ctx.drawImage(self.flare, self.x - self.flareWidth / 2 - xavg, self.y - self.flareHeight / 2, self.flareWidth, self.flareHeight);
+            //ctx.drawImage(self.flare, self.x - self.flareWidth / 2 - xavg, self.y - self.flareHeight / 2, self.flareWidth, self.flareHeight);
             ctx.globalCompositeOperation = "source-over";
             for (i = 0; i < numParticles; i++) {
                 var p = self.particles[i],
@@ -95,30 +106,16 @@ window.cx = window.cx || {};
                 ctx.fillStyle = gradient;
                 ctx.arc(p.location.x, p.location.y, p.radius, TWOPI, false);
                 ctx.fill();
-
-                //lets move the particles
-                p.remaining_life -= scene.elapsedTime;
-                p.radius -= scene.elapsedTimeSeconds * 20;
-
-
-                p.location.x += p.speed.x * scene.elapsedTime;////p.speed.x*(scene.gravx+1.0)*5;
-                p.location.y += p.speed.y * scene.elapsedTime;//p.speed.y*(scene.gravy+1.0)*5;
-
-                //regenerate particles
-                if (p.remaining_life < 0 || p.radius < 0) {
-                    //a brand new particle replacing the dead one
-                    self.particles[i] = new Particle(self.x, self.y);
-                }
             }
 
         };
 
         function Particle(x, y) {
-            this.speed = { x: -(scene.gravx * 4 + Math.random()) * 0.02, y: -(scene.gravy * 4 + Math.random()) * 0.02 };
+            this.speed = { x: -(scene.gravx * 2 + Math.random()) * 0.025, y: -(scene.gravy * 2 + Math.random()) * 0.025 };
             this.location = { x: x, y: y };
-            var size = scene.height / 60;
+            var size = scene.height / 80;
             //radius range = 10-30
-            this.radius = size * 1.5 + Math.random() * size * 1;
+            this.radius = size * 1.1 + Math.random() * size ;
             //life range = 20-30
             this.life = (size + Math.random() * size) * 25;
             this.remaining_life = this.life;

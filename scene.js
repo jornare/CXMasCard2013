@@ -21,7 +21,7 @@ window.cx = window.cx || {};
         this.bg = new ns.CanvasImage(0, 0, 200, 200, 'img/fireplacebg.jpg');
 
         this.stats = false;
-        this.magicBall;
+        this.magicBall = null;
 
         self.x = 0;
         self.y = 0;
@@ -32,6 +32,8 @@ window.cx = window.cx || {};
         self.gravx = 0.0;
         self.gravy = 1.0;
         self.touch = false;
+        this.flame1 = new ns.Flame(this, 100, 100);
+        this.flame2 = new ns.Flame(this, 160, 100);
 
 
         this.onLoad = function (canvas, canvascol) {
@@ -58,6 +60,8 @@ window.cx = window.cx || {};
             self.magicBall.gravx = self.gravx;
             self.magicBall.gravy = self.gravy;
             self.magicBall.move(elapsed);
+            self.flame1.move(elapsed);
+            self.flame2.move(elapsed);
            // self.tree.move(elapsed);
             self.lastFrameTime = now;
         };
@@ -76,6 +80,9 @@ window.cx = window.cx || {};
             //gfx
             self.bg.draw(ctx);
             //self.cxlogo.draw( ctx );
+
+            self.flame1.draw(ctx);
+            self.flame2.draw(ctx);
 
             self.magicBall.draw(ctx);
 
@@ -109,6 +116,10 @@ window.cx = window.cx || {};
             self.canvas.height = h;
             self.bg.width = w;
             self.bg.height = h;
+            self.flame1.x = 50 * self.scale.x;
+            self.flame1.y = 310 * self.scale.y;
+            self.flame2.x = 150 * self.scale.x;
+            self.flame2.y = 390 * self.scale.y;
             /*self.cxlogo.width = Math.floor(self.scale.x * 820 * 0.8);
             self.cxlogo.height = Math.floor(self.scale.y * 262 * 0.8);
             self.cxlogo.x = Math.floor(self.scale.x * 30);
@@ -118,16 +129,15 @@ window.cx = window.cx || {};
            // self.flame = new ns.Flame(self, self.scale.x * 806.0, self.scale.y * 330.0);
 
             var mbx = self.scale.x * 400>>0,
-                mby = h - 489 * self.scale.x  +40*self.scale.y>>0;
+                mby = (h - 489 * self.scale.x  + 70*self.scale.y)>>0;
 
             if (!this.magicBall) {
                 this.magicBall = new ns.MagicBall(mbx, mby, self.scale.x, self.scale.y);
             }
-
-
-
+            self.magicBall.x = mbx;
+            self.magicBall.y = mby;
             self.magicBall.resize(self.scale);
-            self.magicBall.setPos(mbx, mby);
+
 
 
             var card = document.getElementById('card');
