@@ -1,6 +1,10 @@
 window.cx = window.cx || {};
+if (typeof Audio === undefined) {
+    var Audio = { play: function () { }, canPlayType: function () { return false }};
+}
 (function (ns) {
     var TWOPI = Math.PI * 2;
+    //var tss = new Audio("");
     ns.Flame = function (_scene, x, y) {
         var self = this;
         var scene = _scene;
@@ -13,6 +17,7 @@ window.cx = window.cx || {};
         this.flareWidth = 1;
         this.flareHeight = 1;
         this.heatCenterY = 1;
+        this.dead = false;
        /* this.flare.onload = function () {
             self.flareWidth = self.flare.width * scene.scale.x;
             self.flareHeight = self.flare.height * scene.scale.y;
@@ -25,8 +30,8 @@ window.cx = window.cx || {};
                 //	    	self.colors[i+64] = {r: 0, g: 0, b: 0, a: 192-i};
 
                 //fin gul flamme
-                self.colors[i] = { r: 255, g: 255, b: (63 - i) << 2, a: 255 - i };
-                self.colors[i + 64] = { r: 255, g: 255 - i, b: 0, a: 192 - i };
+                self.colors[i] = { r: 255, g: 255, b: (63 - i) << 2, a: 128 - i };
+                self.colors[i + 64] = { r: 255, g: 255 - i, b: 0, a: 64 - i };
 
 
                 /* self.colors[i + 0] = {r: 0, g: 0, b: i << 1, a: i};
@@ -70,6 +75,9 @@ window.cx = window.cx || {};
      
 
         this.draw = function (ctx) {
+            if (this.dead) {
+                return;
+            }
             var numParticles = self.particles.length,
                 xavg = 0.0,
                 colors = self.colors,
@@ -89,6 +97,9 @@ window.cx = window.cx || {};
             for (i = 0; i < numParticles; i++) {
                 var p = self.particles[i],
                     index = Math.min((10 + self.y - p.location.y) << 0, numcolors - 1);
+                if (p.remaining_life == 0) {
+                    continue;
+                }
                 if (index < 0) {
                     index = 0;
                 } else if (index > 40) {
@@ -98,14 +109,25 @@ window.cx = window.cx || {};
                 ctx.beginPath();
                 //changing opacity according to the life.
                 //opacity goes to 0 at the end of life of a particle
-                p.opacity = Math.round(p.remaining_life / p.life * 100) / 100
+                p.opacity = Math.round(p.remaining_life / p.life * 100) / 200 * c.a;
                 //a gradient instead of white fill
                 var gradient = ctx.createRadialGradient(p.location.x, p.location.y, 0, p.location.x, p.location.y, p.radius);
-                gradient.addColorStop(0, "rgba(" + c.r + ", " + c.g + ", " + c.b + ", " + c.a + ")");
+                gradient.addColorStop(0, "rgba(" + c.r + ", " + c.g + ", " + c.b + ", " + p.opacity + ")");
                 gradient.addColorStop(1, "rgba(" + c.r + ", " + c.g + ", " + c.b + ", 0)");
                 ctx.fillStyle = gradient;
                 ctx.arc(p.location.x, p.location.y, p.radius, TWOPI, false);
                 ctx.fill();
+            }
+
+            this.touch = function (x, y) {
+                if (x-10<this.x && x+10>this.x && y-10<this.y && y+10>this.y) {
+                    this.dead = true;
+                } else if (this.dead) {
+                    var self = this;
+                    setTimeout(function () {
+                        self.dead = false;
+                    }, 3000);
+                }
             }
 
         };

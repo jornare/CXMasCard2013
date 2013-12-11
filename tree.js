@@ -28,7 +28,8 @@ window.cx = window.cx || {};
             scale = _scale || 1.0,
             height = _height || 100,
             treeHeight = 0,
-            treeWidth = 0;
+            treeWidth = 0,
+            spriteRadius = 0;
 
         createSprites();
         createBalls();
@@ -57,8 +58,9 @@ window.cx = window.cx || {};
         // Let's make 10 leaves sprites, with different color intensities, to make the inner leaves inside the tree darker
         function createSprites() {
             var rhalf =  8*scale >> 0,
-                r=2*rhalf,
+                r = 2*rhalf,
                 w= 2*r;
+            spriteRadius = r;
 
             for (k = 1; k <= 10; k++) {
                 // Setting up the sprite size and getting the context
@@ -219,9 +221,8 @@ window.cx = window.cx || {};
                     continue;
                 }
                 context.drawImage(sprite, //sprite
-                    left + L[0] * mcd + L[2] * msd >> 0, //x
-                    top + L[1] >> 0
-                    , //y
+                    left + L[0] * mcd + L[2] * msd - spriteRadius>> 0, //x
+                    top + L[1] >> 0, //y
                     sprite.width,
                     sprite.height
                     ); 

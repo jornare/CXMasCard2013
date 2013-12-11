@@ -46,8 +46,6 @@ window.cx = window.cx || {};
             self.drawTimer = setTimeout(self.draw, 50);
         };
 
-
-
         this.move = function () {
             var now = elapsed = new Date().getTime();
             if (self.lastFrameTime == 0) {
@@ -64,6 +62,17 @@ window.cx = window.cx || {};
             self.flame2.move(elapsed);
            // self.tree.move(elapsed);
             self.lastFrameTime = now;
+            if (self.touch) {
+                self.flame1.touch(self.touch.x, self.touch.y);
+                self.flame2.touch(self.touch.x, self.touch.y);
+            } else {
+                if (self.flame1.dead) {
+                    setTimeout(function () { self.flame1.dead = false }, 3000);
+                }
+                if (self.flame2.dead) {
+                    setTimeout(function () { self.flame2.dead = false }, 3000);
+                }
+            }
         };
 
         this.draw = function () {
@@ -117,9 +126,9 @@ window.cx = window.cx || {};
             self.bg.width = w;
             self.bg.height = h;
             self.flame1.x = 50 * self.scale.x;
-            self.flame1.y = 310 * self.scale.y;
+            self.flame1.y = 312 * self.scale.y;
             self.flame2.x = 150 * self.scale.x;
-            self.flame2.y = 390 * self.scale.y;
+            self.flame2.y = 392 * self.scale.y;
             /*self.cxlogo.width = Math.floor(self.scale.x * 820 * 0.8);
             self.cxlogo.height = Math.floor(self.scale.y * 262 * 0.8);
             self.cxlogo.x = Math.floor(self.scale.x * 30);
