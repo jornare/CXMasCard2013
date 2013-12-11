@@ -3,6 +3,7 @@ window.cx = window.cx || {};
     var location = window.location,
         dom = {
             to: $('to'),
+            to_en: $('to_en'),
             card:$('card')
         }
 
@@ -16,18 +17,40 @@ window.cx = window.cx || {};
 
     ns.Card = function (scene) {
         var scene = scene;
+        var dontFlip = false;
 
         this.onLoad = function () {
-            dom.to= $('to'),
             dom.card = $('card');
+            dom.to = $('to');
+            dom.to_en = $('to_en');
+            this.setLang();
             this.setReceipient();
             scene.onLoad($('scenecanvas'), $('canvascol'));
         }
 
         this.setReceipient = function (receipient) {
-            var to = dom.to;
-            to.innerText = receipient || getReceipientFromUrl() || 'Deg';
+            dom.to.innerText = dom.to_en = receipient || getReceipientFromUrl() || 'Deg';
         }
+
+        this.setLang = function (language) {
+            dontFlip = true;
+            setTimeout(function () { dontFlip = false }, 100);
+            if (!language) {
+                if (navigator.userLanguage) // Explorer
+                    language = navigator.userLanguage;
+                else if (navigator.language) // FF
+                    language = navigator.language;
+                else
+                    language = "en";
+            }
+            if (language.indexOf('no')>=0 || language.indexOf('nb') >= 0) {
+                $('english').style.display = 'none';
+                $('norwegian').style.display = 'inline-block';
+            } else {
+                $('english').style.display = 'inline-block';
+                $('norwegian').style.display = 'none';
+            }
+        };
 
         this.resize = function (w, h) {
             scene.onResize(w, h);
@@ -36,7 +59,9 @@ window.cx = window.cx || {};
         this.flip = function (toFront, force) {
             var cssClass = "card";
             if (toFront) {//we are on the flipside
-
+                if (dontFlip) {
+                    return;
+                }
             } else {
                 if (force || scene.touch) {
                     if (force || (scene.touch.x < scene.width / 10 && scene.touch.y < scene.height / 10)) {
