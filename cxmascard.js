@@ -17,7 +17,7 @@ window.cx = window.cx || {};
 
         hideAddressBar();
         setTimeout(function () {
-            //card.flip(false, true);
+            card.flip(false, true);
         }, 5000);
 
         setTimeout(function () {
