@@ -198,7 +198,7 @@ window.cx = window.cx || {};
             msd = Math.sin(D);
 
         this.move = function (elapsed) {
-            D += elapsed * 0.00005;
+            D += elapsed * 0.00009;
             if (elapsed > 10) {
                 mcd = Math.cos(D),
                 msd = Math.sin(D);
