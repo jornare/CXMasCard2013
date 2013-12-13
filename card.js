@@ -36,7 +36,9 @@ window.cx = window.cx || {};
             dontFlip = true;
             setTimeout(function () { dontFlip = false }, 100);
             if (!language) {
-                if (navigator.userLanguage) // Explorer
+                if (location.href.toLowerCase().indexOf('card') >= 0) {
+                    language = 'en';
+                }else if (navigator.userLanguage) // Explorer
                     language = navigator.userLanguage;
                 else if (navigator.language) // FF
                     language = navigator.language;
