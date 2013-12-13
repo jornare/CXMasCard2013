@@ -101,11 +101,6 @@ window.cx = window.cx || {};
 
     function endTouch() {
         card.flip(false);
-        for (var i = 0; i < scene.stuckFlakes.length; i++) {
-            scene.stuckFlakes[i].obj.speedx = scene.touch.dx * 2;
-            scene.stuckFlakes[i].obj.speedy = scene.touch.dy * 2;
-        }
-        scene.stuckFlakes = [];
         scene.touch = false;
     }
 

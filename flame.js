@@ -119,34 +119,31 @@ if (typeof Audio === undefined) {
                 ctx.fill();
             }
 
-            this.touch = function (x, y) {
-                if (x-10<this.x && x+10>this.x && y-10<this.y && y+10>this.y) {
-                    this.dead = true;
-                } else if (this.dead) {
-                    var self = this;
-                    setTimeout(function () {
-                        self.dead = false;
-                    }, 3000);
-                }
-            }
-
         };
+
+        this.touch = function (x, y) {
+            if (x - 10 < this.x && x + 10 > this.x && y - 10 < this.y && y + 10 > this.y) {
+                this.dead = true;
+            } else if (this.dead) {
+                var self = this;
+                setTimeout(function () {
+                    self.dead = false;
+                }, 3000);
+            }
+        }
 
         function Particle(x, y) {
             this.speed = { x: -(scene.gravx * 2 + Math.random()) * 0.025, y: -(scene.gravy * 2 + Math.random()) * 0.025 };
             this.location = { x: x, y: y };
             var size = scene.height / 80;
             //radius range = 10-30
-            this.radius = size * 1.1 + Math.random() * size ;
+            this.radius = size * 1.1 + Math.random() * size;
             //life range = 20-30
             this.life = (size + Math.random() * size) * 25;
             this.remaining_life = this.life;
         };
-
         this.create();
     }
-
-
 
 
 

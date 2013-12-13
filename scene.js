@@ -34,7 +34,7 @@ window.cx = window.cx || {};
         self.touch = false;
         this.flame1 = new ns.Flame(this, 100, 100);
         this.flame2 = new ns.Flame(this, 160, 100);
-
+        this.flame1.dead = this.flame2.dead = true;
 
         this.onLoad = function (canvas, canvascol) {
             var i = 0;
@@ -44,6 +44,14 @@ window.cx = window.cx || {};
             self.resize(window.innerWidth, window.innerHeight);
 
             self.drawTimer = setTimeout(self.draw, 50);
+
+            setTimeout(function () {
+                self.flame2.dead = false;
+            }, 1500);
+            setTimeout(function () {
+                self.flame1.dead = false;
+            }, 3000);
+
         };
 
         this.move = function () {
