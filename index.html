@@ -202,7 +202,8 @@
 		font-size:20px;
 		
 	}	
-}
+}
+
 </style>
 	
 </head>
@@ -211,7 +212,7 @@
         <div id="front" class="front">
             <canvas id="scenecanvas" width="100" height="100"></canvas>
         </div>
-        <div id="back" class="back" onclick="card.flip(true)">
+        <div id="back" class="back" onclick="card.flip(true)" ontouchend="card.flip(true)">
             <img src="img/cardbg.jpg" style="width:inherit;height:inherit;position:absolute;" />
             <div id="norwegian">
                 <div class="content handwriting" style="margin:2%;height:inherit;position:absolute">
@@ -221,7 +222,7 @@
                         <p>Støtten går fra NerdAid til arbeidet på Filippinene etter tyfonens herjinger - med hundretusener av mennesker som trenger: mat, vann, tak over hodet og medisinsk behandling. Computas støtter helhjertet aksjonen, og minner også om at man kan gjøre donasjoner privat.</p>
                     </div>
                     <p>Vi ønsker deg og dine en riktig God Jul og et Godt Nytt år!</p>
-                    <p class="switchLang" onclick="card.setLang('en');">Switch to English</p>
+                    <p class="switchLang" onclick="card.setLang('en');" ontouchend="card.setLang('en');">Switch to English</p>
                 </div>
                 <div class="addr" style="top:33%">
                     <div class="addrfield handwriting">Til <span id="to" class="to">Deg</span></div>
@@ -237,7 +238,7 @@
                             food, water, shelter and medical treatment. Computas wholeheartly supports the action, and remids that you also can do private donations.</p>
                     </div>
                     <p>We wish you and your loved ones a Merry Christmas and a Happy New Year!</p>
-                    <p class="switchLang" onclick="card.setLang('no');">Bytt til norsk</p>
+                    <p class="switchLang" onclick="card.setLang('no');" ontouchend="card.setLang('en');">Bytt til norsk</p>
                 </div>
                 <div class="addr" style="top:33%">
                     <div class="addrfield handwriting">To <span id="to_en" class="to">You</span></div>
