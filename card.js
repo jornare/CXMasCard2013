@@ -38,7 +38,9 @@ window.cx = window.cx || {};
             if (!language) {
                 if (location.href.toLowerCase().indexOf('card') >= 0) {
                     language = 'en';
-                }else if (navigator.userLanguage) // Explorer
+                } else if (location.href.toLowerCase().indexOf('kort.html') >= 0) {
+                    language = 'no';
+                } else if (navigator.userLanguage) // Explorer
                     language = navigator.userLanguage;
                 else if (navigator.language) // FF
                     language = navigator.language;
