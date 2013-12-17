@@ -29,7 +29,7 @@ window.cx = window.cx || {};
         }
 
         this.setReceipient = function (receipient) {
-            dom.to.innerText = dom.to_en = receipient || getReceipientFromUrl() || 'Deg';
+            dom.to.innerText = dom.to.textContent = dom.to_en.innerText dom.to_en.textContent = receipient || getReceipientFromUrl() || 'Deg';
         }
 
         this.setLang = function (language) {
