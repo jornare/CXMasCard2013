@@ -10,14 +10,16 @@ window.cx = window.cx || {};
     function $(q) {
         return document.getElementById(q);
     }
-    function getReceipientFromUrl(){
-        var receipient = location.hash.substr(1);
+    function getReceipientFromUrl() {
+        var l = location ? location : (window.location ? window.location : document.location);
+        var receipient = l.hash ? l.hash.substr(1):(l.search?l.search.substr(1):'');
         return decodeURIComponent(receipient);
     }
 
     ns.Card = function (scene) {
-        var scene = scene;
-        var dontFlip = false;
+        var scene = scene,
+            dontFlip = false;
+        this.lang = 'en';
 
         this.onLoad = function () {
             dom.card = $('card');
@@ -29,14 +31,14 @@ window.cx = window.cx || {};
         }
 
         this.setReceipient = function (receipient) {
-            dom.to.innerText = dom.to.textContent = dom.to_en.innerText = dom.to_en.textContent = receipient || getReceipientFromUrl() || 'Deg';
+            dom.to.innerText = dom.to.textContent = dom.to_en.innerText = dom.to_en.textContent = receipient || getReceipientFromUrl() || (this.lang=='no'?'Deg':'You');
         }
 
         this.setLang = function (language) {
             dontFlip = true;
             setTimeout(function () { dontFlip = false }, 100);
             if (!language) {
-                if (location.href.toLowerCase().indexOf('card') >= 0) {
+                if (location.href.toLowerCase().indexOf('card.html') >= 0) {
                     language = 'en';
                 } else if (location.href.toLowerCase().indexOf('kort.html') >= 0) {
                     language = 'no';
@@ -47,7 +49,11 @@ window.cx = window.cx || {};
                 else
                     language = "en";
             }
-            if (language.indexOf('no')>=0 || language.indexOf('nb') >= 0) {
+            if (language.indexOf('nb') >=0 || language.indexOf('no') >= 0) {
+                language = 'no';
+            }
+            this.lang = language;
+            if (language == 'no') {
                 $('english').style.display = 'none';
                 $('norwegian').style.display = 'inline-block';
             } else {
